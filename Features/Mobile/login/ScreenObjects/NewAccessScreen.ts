@@ -5,16 +5,16 @@ class NewAcessScreen {
         return $("//XCUIElementTypeStaticText[@name=\"Requisitos de afiliación\"]");
     }
 
-    get AfiliarmeButton() {
+    get afiliarmeButton() {
         return $("//XCUIElementTypeButton[@name=\"Afiliarme\"]");
     }
 
 
-    get YaSoyClienteButton() {
+    get yaSoyClienteButton() {
         return $("//XCUIElementTypeButton[@name=\"Ya soy cliente\"]");
     }
 
-    get PressBackButton(){
+    get pressBackButton(){
         return $("//XCUIElementTypeImage[@name=\"left-arrow\"]");
     }
     

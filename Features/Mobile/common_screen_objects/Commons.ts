@@ -1,9 +1,14 @@
 import { $ } from "@wdio/globals";
 
-class Common {
+class Commons {
     get backButton () {
         return $("//XCUIElementTypeImage[@name=\"left-arrow\"]")
     }
+    get okButton() {
+        return $(
+          "UPDATE XPATH"
+        );
+      }
 }
 
-export default new Common ();
+export default new Commons ();
