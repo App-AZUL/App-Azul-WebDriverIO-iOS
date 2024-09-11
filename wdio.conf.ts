@@ -31,18 +31,18 @@ export const config: Options.Testrunner = {
             'appium:platformVersion': '17.2', // Your iOS version
             'appium:udid': '00008120-00162C320238A01E', // Replace with your device UDID
             'appium:automationName': 'XCUITest',
-            "appium:noReset": true,
+            //"appium:noReset": true,
             'appium:app': 'app/AzulNativeApp.ipa' // Path to your iOS app
             
         },
       
     ],
 
-    logLevel: 'info',
+    logLevel: 'debug',
 
-    bail: 0,
+    bail: 1,
 
-    waitforTimeout: 990000,
+    waitforTimeout: 10000,
 
     connectionRetryTimeout: 1220000,
 

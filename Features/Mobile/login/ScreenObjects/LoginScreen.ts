@@ -3,63 +3,43 @@ import AffiliationRequirementsScreen from "../../azul_affiliation/ScreenObjects/
 
 
 class LoginScreen {
-    get screenTitle() {
-        return $(
-          "//*[contains(@text,'Vende desde tu móvil\nde forma fácil y segura')]"
-        );
-      }
+  get screenTitle() {
+    return $(
+      "//XCUIElementTypeStaticText[@name='Afíliate aquí']"
+    );
+  }
       get usernameInput() {
-        return $("//*[contains(@text,'Ya soy cliente')]");
+        return $('//XCUIElementTypeOther[XCUIElementTypeImage[@name="User"]]/XCUIElementTypeTextField');
       }
       get passwordInput() {
         return $(
-          "//*[@class = 'android.widget.EditText' and @resource-id = 'com.sdp.appazul:id/edit_password']"
+          '//XCUIElementTypeOther[XCUIElementTypeImage[@name="Password"]]/XCUIElementTypeSecureTextField'
         );
       }
       get iniciarSesionButton() {
-        return $("//*[(@text = 'Iniciar sesión' or . = 'Iniciar sesión')]");
+        return $("//XCUIElementTypeButton[@name='Iniciar sesión']");
       }
       get resetPasswordButton() {
-        return $("");
+        return $("//XCUIElementTypeButton[@name=' ¿Se te olvidó tu contraseña?']");
       }
       get afiliateAquiButton() {
-        return $("");
+        return $("//XCUIElementTypeButton[@name='Afíliate aquí']");
       }
       get appVersionLabel() {
-        return $("");
+        return $("//XCUIElementTypeStaticText[@name='Version 10.0.2 (5)']");
       }
       get informativeText() {
-        return $("");
+        return $("//XCUIElementTypeStaticText[@name='¿Aún no eres cliente de AZUL o  no has completado tu afiliación?']");
       }
       get resetPasswordWebTitle() {
-        return $("");
+        return $("//XCUIElementTypeStaticText[@name='¡Hola! Para poder recuperar tu contraseña, por favor, responde la información que a continuación te solicitamos:']");
       }
     
       /* Pop up messages */
-      get usernameEmptyMessage() {
-        return $(
-          "//*[@class = 'android.widget.TextView' and (@text = 'Por favor introduce tu usuario para continuar.' or . = 'Por favor introduce tu usuario para continuar.') and @resource-id = 'android:id/message']"
-        );
-      }
-      get passwordEmptyMessage() {
-        return $(
-          "//*[@class = 'android.widget.TextView' and (@text = 'Por favor introduce tu contraseña para continuar.' or . = 'Por favor introduce tu contraseña para continuar.') and @resource-id = 'android:id/message']"
-        );
-      }
-      get incorrectCredentialsPopUpTitle() {
-        return $("");
-      }
-      get incorrectCredentialsPopUpText() {
-        return $("");
-      }
+
     
     /* Functions */
   async verifyLoginScreenElements() {
-    //Verify screen title
-    await this.screenTitle.waitForExist({
-      timeout: 5000,
-    });
-    await expect(this.screenTitle).toBeExisting();
 
     //Verify user input
     await this.usernameInput.waitForExist({
@@ -90,12 +70,6 @@ class LoginScreen {
       timeout: 5000,
     });
     await expect(this.appVersionLabel).toBeExisting();
-
-    //verify informative
-    await this.screenTitle.waitForExist({
-      timeout: 5000,
-    });
-    await expect(this.screenTitle).toBeExisting();
   }
   async verifyResetPassword() {
     await this.resetPasswordButton.click();

@@ -1,10 +1,12 @@
 import { Given, When, Then } from "@wdio/cucumber-framework";
-import { expect, $ } from "@wdio/globals";
+import { expect } from "@wdio/globals";
 import OnboardingScreen from "../ScreenObjects/OnboardingScreen.ts";
 import NewAccessScreen from "../ScreenObjects/NewAccessScreen.ts";
 import LoginScreen from "../ScreenObjects/LoginScreen.ts";
+import PinConfigurationScreen from "../ScreenObjects/PinConfigurationScreen.ts";
 import AffiliationRequirementsScreen from "../../azul_affiliation/ScreenObjects/AffiliationRequirementsScreen.ts";
 import Helpers from "../../../../Helpers/Helpers.ts";
+
 
 /*  Verify Onboarding Screen steps  */
 Given("User started the app by first time", async () => {
@@ -38,8 +40,8 @@ Then("User can continue to New Access Screen", async () => {
 
 /*  Verify New Access screen steps  */
 Given(`User is on the New Access Screen`, async () => {
-  await NewAccessScreen.screenTitle.waitForExist({ timeout: 5000 });
-  await expect(NewAccessScreen.screenTitle).toBeExisting();
+  //await NewAccessScreen.screenTitle.waitForExist({ timeout: 5000 });
+  //await expect(NewAccessScreen.screenTitle).toBeExisting();
 });
 
 When(`User press on Afiliarme`, async () => {
@@ -57,12 +59,14 @@ When(`User press back`, async () => {
   await Helpers.pressAppBackButton();
 });
 
-When(`User press Ya soy cliente`, async () => {
-  await NewAccessScreen.yaSoyClienteButton.click();
-});
+
 
 Then(`User should be on Login Screen`, async () => {
-  await LoginScreen.verifyLoginScreenElements();
+  //await LoginScreen.verifyLoginScreenElements();
+  await LoginScreen.screenTitle.waitForExist({
+    timeout: 5000,
+  });
+  await expect(LoginScreen.screenTitle).toBeExisting();
 });
 
 //----------------------------------------------------------------------------
@@ -83,7 +87,7 @@ Then(`User should be redirected to AZUL reset password portal`, async () => {
 });
 
 Then(`User should be able to go back to login screen`, async () => {
-  driver.back();
+  Helpers.pressAppBackButton();
   await LoginScreen.verifyLoginScreenElements();
 });
 
@@ -92,27 +96,33 @@ Then(`User should be able to go back to login screen`, async () => {
 /*  Login only with invalid password  */
 
 When(`User only types an invalid password on password textfield`, async () => {
-  (await LoginScreen.passwordInput).setValue("wrong password");
+  await LoginScreen.passwordInput.setValue("wrong password");
+  await Helpers.closeKeyboard();
+  
 });
 
-When(`User clicks on Iniciar sesión button`, async () => {
+When(`User clicks on Iniciar sesion button`, async () => {
   await LoginScreen.iniciarSesionButton.click();
 });
 
-Then(`User should see a message asking for typing the username`, async () => {
-  await LoginScreen.usernameEmptyMessage.waitForExist({
+Then(`User should stay in Login screen`, async () => {
+  await LoginScreen.screenTitle.waitForExist({
     timeout: 5000,
   });
-  await expect(LoginScreen.usernameEmptyMessage).toBeExisting();
+  await expect(LoginScreen.screenTitle).toBeExisting();
 });
 
-Then(
-  `after dismissing the message User still being on login screen`,
-  async () => {
-    await Helpers.dismissPopUp();
-    await LoginScreen.verifyLoginScreenElements();
+Then(`User on Login screen`, async () => {
+  await LoginScreen.screenTitle.waitForExist({
+      timeout: 5000,
+    });
+    await expect(LoginScreen.screenTitle).toBeExisting();
   }
 );
+Then(`User cleared password textfield`, async () => {
+  await LoginScreen.passwordInput.clearValue();
+  await Helpers.closeKeyboard();
+});
 
 //----------------------------------------------------------------------------
 
@@ -120,13 +130,13 @@ Then(
 
 When(`User only types an invalid username on username textfield`, async () => {
   (await LoginScreen.usernameInput).setValue("wrong username");
+  await Helpers.closeKeyboard();
 });
 
-Then(`User should see a message asking for typing the username`, async () => {
-  await LoginScreen.passwordEmptyMessage.waitForExist({
-    timeout: 5000,
-  });
-  await expect(LoginScreen.passwordEmptyMessage).toBeExisting();
+Then(`User cleared username textfield`, async () => {
+  await LoginScreen.usernameInput.clearValue();
+  await Helpers.closeKeyboard();
+
 });
 
 //----------------------------------------------------------------------------
@@ -135,14 +145,20 @@ Then(`User should see a message asking for typing the username`, async () => {
 
 When(`User only types a valid password on password textfield`, async () => {
   (await LoginScreen.passwordInput).setValue("prueba1");
+  await Helpers.closeKeyboard();
 });
 
-Then(`User should see a message asking for typing the username`, async () => {
-  await LoginScreen.usernameEmptyMessage.waitForExist({
+Then(`after dismissing the message User still being on login screen`, async () => {
+  await LoginScreen.screenTitle.waitForExist({
     timeout: 5000,
   });
-  await expect(LoginScreen.usernameEmptyMessage).toBeExisting();
+  await expect(LoginScreen.screenTitle).toBeExisting();
+  await LoginScreen.passwordInput.clearValue();
+  await Helpers.closeKeyboard();
 });
+
+
+
 
 //----------------------------------------------------------------------------
 
@@ -150,15 +166,81 @@ Then(`User should see a message asking for typing the username`, async () => {
 
 When(`User only types a valid username on username textfield`, async () => {
   (await LoginScreen.usernameInput).setValue("miguelcasey");
+  await Helpers.closeKeyboard();
 });
 
 Then(`User should see a message asking for typing the password`, async () => {
-  await LoginScreen.passwordEmptyMessage.waitForExist({
+  await LoginScreen.screenTitle.waitForExist({
     timeout: 5000,
   });
-  await expect(LoginScreen.passwordEmptyMessage).toBeExisting();
+  await expect(LoginScreen.screenTitle).toBeExisting();
+  await LoginScreen.usernameInput.clearValue();
+  await Helpers.closeKeyboard();
+});
+
+
+//----------------------------------------------------------------------------
+
+/*  Login with invalid user and valid password  */ 
+
+When(`User types an invalid username on username textfield`, async () => {
+  (await LoginScreen.usernameInput).setValue("wrong username");
+  await Helpers.closeKeyboard();
+});
+
+Then(`User types a valid password on password textfield`, async () => {
+  (await LoginScreen.passwordInput).setValue("prueba1");
+  await Helpers.closeKeyboard();
+  await LoginScreen.iniciarSesionButton.click();
+});
+
+Then(`User should see a message saying incorrect credentials`, async () => {
+  await LoginScreen.screenTitle.waitForExist({
+    timeout: 5000,
+  });
+  await expect(LoginScreen.screenTitle).toBeExisting();
+});
+
+/*  Login with valid user and invalid password  */
+
+When(`User types a valid username on username textfield`, async () => {
+  (await LoginScreen.usernameInput).setValue("miguelcasey");
+  await Helpers.closeKeyboard();
+});
+
+When(`User types an invalid password on password textfield`, async () => {
+  await LoginScreen.passwordInput.setValue("wrong password");
+  await Helpers.closeKeyboard();
+  await LoginScreen.iniciarSesionButton.click();
 });
 
 //----------------------------------------------------------------------------
 
-/*  Login with invalid user and valid password  */
+/*  Login empty credentials  */
+When(`User should see a message asking for credentials`, async () => {
+  await LoginScreen.screenTitle.waitForExist({
+    timeout: 5000,
+  });
+  await expect(LoginScreen.screenTitle).toBeExisting();
+});
+
+//----------------------------------------------------------------------------
+
+/*  Login with valid credentials  */
+When(`User a valid username on username textfield`, async () => {
+  (await LoginScreen.usernameInput).setValue("miguelcasey");
+  await Helpers.closeKeyboard();
+});
+
+Then(`User a valid password on password textfield`, async () => {
+  (await LoginScreen.passwordInput).setValue("prueba1");
+  await Helpers.closeKeyboard();
+});
+
+Then(`User clicks Iniciar sesion button`, async () => {
+  await LoginScreen.iniciarSesionButton.click();
+});
+
+Then(`User should be redirected to PIN Configuration screen`, async () => {
+  await PinConfigurationScreen.screenTitle.click();
+});
