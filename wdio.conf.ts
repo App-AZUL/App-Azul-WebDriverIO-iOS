@@ -1,4 +1,5 @@
-import type { Options } from '@wdio/types'
+import type { Options } from '@wdio/types';
+import allure from "@wdio/allure-reporter";
 
 export const config: Options.Testrunner = {
     runner: 'local',
@@ -52,7 +53,28 @@ export const config: Options.Testrunner = {
 
     framework: 'cucumber',
 
-    reporters: ["spec"],
+    afterStep: async function (step) {
+        allure.addAttachment(
+          `Failed Step: ${step.text}`,
+          Buffer.from(await driver.takeScreenshot(), "base64"),
+          "image/png"
+        );
+      },
+
+    reporters:
+    [
+        [ 
+        'allure',
+        {
+          outputDir: "allure-results",
+          disableWebdriverStepsReporting: true, // Disable WebDriver steps reporting
+          disableWebdriverScreenshotsReporting: true,
+          useCucumberStepReporter: true,
+        },
+      ],
+    ],
+    
+    
 
     cucumberOpts: {
         require: ["./features/**/*.ts"], // Update if needed,
@@ -68,63 +90,4 @@ export const config: Options.Testrunner = {
         timeout: 600000,
         ignoreUndefinedDefinitions: false
     },
-
-    // Uncomment and implement any needed hooks
-
-    // onPrepare: function (config, capabilities) {
-    // },
-
-    // onWorkerStart: function (cid, caps, specs, args, execArgv) {
-    // },
-
-    // onWorkerEnd: function (cid, exitCode, specs, retries) {
-    // },
-
-    // beforeSession: function (config, capabilities, specs, cid) {
-    // },
-
-    // before: function (capabilities, specs) {
-    // },
-
-    // beforeCommand: function (commandName, args) {
-    // },
-
-    // beforeFeature: function (uri, feature) {
-    // },
-
-    // beforeScenario: function (world, context) {
-    // },
-
-    // beforeStep: function (step, scenario, context) {
-    // },
-
-    // afterStep: function (step, scenario, result, context) {
-    // },
-
-    // afterScenario: function (world, result, context) {
-    // },
-
-    // afterFeature: function (uri, feature) {
-    // },
-
-    // afterCommand: function (commandName, args, result, error) {
-    // },
-
-    // after: function (result, capabilities, specs) {
-    // },
-
-    // afterSession: function (config, capabilities, specs) {
-    // },
-
-    // onComplete: function(exitCode, config, capabilities, results) {
-    // },
-
-    // onReload: function(oldSessionId, newSessionId) {
-    // },
-
-    // beforeAssertion: function(params) {
-    // },
-
-    // afterAssertion: function(params) {
-    // }
 }
