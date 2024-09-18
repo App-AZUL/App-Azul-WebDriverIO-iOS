@@ -53,9 +53,9 @@ export const config: Options.Testrunner = {
 
     framework: 'cucumber',
 
-    afterStep: async function (step) {
+    afterStep: async function () {
         allure.addAttachment(
-          `Failed Step: ${step.text}`,
+          `Screenshot`,
           Buffer.from(await driver.takeScreenshot(), "base64"),
           "image/png"
         );
