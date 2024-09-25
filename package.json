@@ -1,4 +1,7 @@
-{
+{ 
+  "name": "app-azul-webdriverio-iOS",
+  "version": "1.0.0",
+  "description": "Automation framework for app azul project",
   "devDependencies": {
     "@wdio/allure-reporter": "^8.39.0",
     "@wdio/appium-service": "^8.39.1",
@@ -13,8 +16,20 @@
     "typescript": "^5.5.3"
   },
   "scripts": {
-    "wdio": "wdio run ./wdio.conf.ts"
+    "build": "tsc",
+    "clean-build": "npm run clean && npm run build",
+    "lint": "eslint ./stepDefinitions",
+    "appium": "appium",
+    "clean": "rimraf .tsbuild/ && rimraf allure-results/ && rimraf junit-report/ && rimraf poGenerated/",
+    "start-web": "npm run clean && npx tsc && npx wdio run ./config/wdio.chrome.conf.ts",
+    "start-mobile": "npm run clean && npx tsc && npx wdio run ./config/wdio.mobile.conf.ts --cucumberOpts.tagExpression",
+    "start-mobile-bs": "npm run clean && npx tsc && npx wdio run ./config/wdio.mobile.bs.conf.ts --cucumberOpts.tagExpression \"@mobile \"",
+    "start-mobile-aws": "npm run clean && npx tsc && npx wdio run ./config/wdio.mobile.aws.conf.ts --cucumberOpts.tagExpression ",
+    "clean-report": "allure generate --clean --single-file ./allure-results",
+    "open-report": "allure open",
+    "version": "auto-changelog -p"
   },
+  
   "dependencies": {
     "@types/node": "^20.14.10",
     "@wdio/types": "^8.39.0"

@@ -10,6 +10,10 @@ class NewAcessScreen {
     get pressBackButton(){
         return $("//XCUIElementTypeImage[@name=\"left-arrow\"]");
     }
+
+    get YaSoyClienteButton(){
+        return $('//XCUIElementTypeButton[@name="Ya soy cliente"]');
+    }
     
 
 }

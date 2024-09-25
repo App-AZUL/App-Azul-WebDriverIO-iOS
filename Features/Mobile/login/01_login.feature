@@ -1,5 +1,7 @@
+@run @mobile @Login @regression
 Feature: Login 
 
+@Login @Regression @HappyPath
 Scenario Outline: Verify Onboarding screen
 
 Given User started the app by first time
@@ -7,7 +9,7 @@ When User checks the elements in the screen matches with the provided design
 Then User can continue to New Access Screen
 
 
-
+@Login @Regression @HappyPath
 Scenario Outline: Verify New Access screen
 
 Given User is on the New Access Screen
@@ -19,7 +21,7 @@ Then User should be on Login Screen
 
 
 
-
+@Login @Regression
 Scenario Outline: Login only with invalid password
 
 Given User is on Login screen
@@ -28,7 +30,7 @@ When User clicks on Iniciar sesion button
 Then User should stay in Login screen
 Then User cleared password textfield
 
-
+@Login @Regression
 Scenario Outline: Login only with invalid user
 
 Given User is on Login screen
@@ -37,7 +39,7 @@ And User clicks on Iniciar sesion button
 Then User should stay in Login screen
 Then User cleared username textfield
 
-
+@Login @Regression
 Scenario Outline: Login only with valid password
 
 Given User is on Login screen
@@ -47,7 +49,7 @@ Then User should stay in Login screen
 Then User cleared password textfield
 
 
-
+@Login @Regression
 Scenario Outline: Login only with valid username
 
 Given User is on Login screen
@@ -57,7 +59,7 @@ Then User should stay in Login screen
 Then User cleared password textfield
 
 
-
+@Login @Regression
 Scenario Outline: Login with invalid user and valid password
 
 Given User is on Login screen
@@ -68,7 +70,7 @@ Then User should see a message saying incorrect credentials
 And after dismissing the message User still being on login screen
 
 
-
+@Login @Regression
 Scenario Outline: Login with valid user and invalid password
 
 Given User is on Login screen
@@ -79,7 +81,7 @@ Then User should see a message saying incorrect credentials
 And after dismissing the message User still being on login screen
 
 
-
+@Login @Regression
 Scenario Outline: Login empty credentials
 
 Given User is on Login screen
@@ -87,7 +89,7 @@ When User clicks on Iniciar sesion button
 Then User should see a message asking for credentials
 
 
-
+@Login @Regression
 Scenario Outline: Login invalid credentials
 
 Given User is on Login screen
@@ -98,7 +100,7 @@ Then User should see a message saying incorrect credentials
 And after dismissing the message User still being on login screen
 
 
-
+@Login @Regression @HappyPath
 Scenario Outline: Login with valid credentials
 
 Given User is on Login screen
